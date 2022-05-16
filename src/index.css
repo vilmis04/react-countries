@@ -8,10 +8,32 @@ body {
   background-color: hsl(145, 85%, 90%);
 }
 
-.list-item {
-  list-style: none;
+h1,
+.list-item,
+.inputs {
   width: 85vw;
   margin: 1rem auto;
   padding: 0.5rem;
+}
+
+.list-item {
+  list-style: none;
   background-color: hsl(145, 85%, 80%);
+}
+
+.inputs {
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filters select {
+  margin-right: 1rem;
+}
+
+select {
+  background-color: hsl(145, 75%, 60%);
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  border-radius: 10px;
 }
