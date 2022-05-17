@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import CountryList from './Components/CountryList';
+import Filters from './Components/Filters';
 
 function App() {
 
-  const [countries, setCountries] = useState(undefined);
-  const [orgCountryList, setOrgCountryList ] = useState(undefined);
-  const [regions, setRegions] = useState(undefined);
+  const [countries, setCountries] = useState([]);
+  const [orgCountryList, setOrgCountryList ] = useState([]);
+  const [regions, setRegions] = useState([]);
 
   useEffect(() => {
     fetch('https://restcountries.com/v2/all?fields=name,region,area')
@@ -22,15 +24,12 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
-
   function handleSort(countries, direction) {
     const list = [...countries];
     const multiplier = direction === 'asc' ? 1 : -1;
-
     list.sort((a,b)=>{
       const nameA = a.name.toUpperCase();
       const nameB = b.name.toUpperCase();
-
       if (nameA < nameB) return (-1*multiplier);
       if (nameA > nameB) return (1*multiplier);
       return 0;
@@ -38,7 +37,6 @@ function App() {
 
     return list;
   }
-
 
   function handleFilters() {
     const direction = document.querySelector('#sort').value;
@@ -61,34 +59,13 @@ function App() {
         }
 
     filteredView = handleSort(filteredView, direction);
-    
     setCountries(filteredView);
   }
 
   return (
     <>
       <h1>List of countries</h1>
-      <div className="inputs">
-        <div className="filters">
-          <select name='filterByRegion' id='filterByRegion' onChange={handleFilters}>
-            <option value="">Filter by region</option>
-            {regions && regions.map(region =>
-              <option value={region} key={region}>{region}</option>
-            )}
-          </select>
-          <select name='filterByArea' id='filterByArea' onChange={handleFilters}>
-            <option value="">Filter by area</option>
-            <option value="larger">Larger than Lithuania</option>
-            <option value="smaller">Smaller than Lithuania</option>
-          </select>
-        </div>
-        <select name='sort' id='sort' onChange={handleFilters}>
-          <option value="asc">Ascending</option>
-          <option value="dsc">Descending</option>
-        </select>
-      </div>
-
-
+      <Filters regions={regions} handleFilters={handleFilters} />
       <CountryList countries={countries} />
     </>
   );
